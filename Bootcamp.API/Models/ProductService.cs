@@ -1,4 +1,5 @@
 ﻿using Bootcamp.API.Controllers;
+using Bootcamp.API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bootcamp.API.Models
@@ -13,12 +14,17 @@ namespace Bootcamp.API.Models
         }
 
         public IActionResult GetAll() => new OkObjectResult(_repository.GetAll());
-        public IActionResult GetById(int id)
+
+        public ResponseDto<ProductDto> GetById(int id)
         {
             var hasProduct = _repository.GetById(id);
 
-            if (hasProduct == null) return new NotFoundResult();
-            else return new OkObjectResult(hasProduct);
+            if (hasProduct == null)
+            {
+                return ResponseDto<ProductDto>.Fail($"Id({id})'ye sahip ürün bulunamammıştır.", 404);
+            }
+            else
+                return ResponseDto<ProductDto>.Success(new ProductDto(hasProduct), 200);
         }
         public IActionResult Save(Product newProduct)
         {
@@ -26,15 +32,15 @@ namespace Bootcamp.API.Models
             return new CreatedAtActionResult(nameof(ProductsController.GetProducts), "Products", new { id = newProduct.Id }, newProduct);
         }
 
-        public IActionResult Update(Product updateProduct)
+        public ResponseDto<NoContent> Update(Product updateProduct)
         {
 
             var hasProduct = _repository.GetById(updateProduct.Id);
 
-            if (hasProduct == null) return new NotFoundResult();
+            if (hasProduct == null) return ResponseDto<NoContent>.Fail($"Id({updateProduct.Id})'ye sahip ürün bulunamammıştır.", 404);
 
             _repository.Update(updateProduct);
-            return new NoContentResult();
+            return ResponseDto<NoContent>.Success(204);
 
 
         }

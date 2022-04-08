@@ -1,4 +1,5 @@
-﻿using Bootcamp.API.Models;
+﻿using Bootcamp.API.Filters;
+using Bootcamp.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Bootcamp.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        #region Http Metot Types, URL, Route, QueryString
         //[HttpGet]
         ////localhost:5500/api/products
         //public IActionResult GetProducts()
@@ -61,13 +63,20 @@ namespace Bootcamp.API.Controllers
         //{
         //    return Ok("Merhaba Dünya[Delete]");
         //}
+        #endregion
 
-        //--------------------------------------------------------------------------------
+        #region ProductsController Codes
 
         private readonly ProductService _productService;
         public ProductsController(ProductService productService) // Constructor Injection 
         {
             _productService = productService;
+        }
+
+        [HttpGet("/api/[controller]/[action]/{id:int}")] // başına / koyunca default route eklenmiyor
+        public IActionResult AnyProduct(int id)
+        {
+            return Ok();
         }
 
 
@@ -78,10 +87,13 @@ namespace Bootcamp.API.Controllers
         }
 
 
+        [MyActionFilter]
         [HttpGet("{id}")]
         public IActionResult GetProducts(int id)
         {
-            return _productService.GetById(id);
+            var result= _productService.GetById(id);
+
+            return new ObjectResult(result) { StatusCode = result.StatusCode };
         }
 
         [HttpPost]
@@ -99,7 +111,9 @@ namespace Bootcamp.API.Controllers
         [HttpPut]
         public IActionResult UpdateProducts(Product updateProduct)
         {
-            return _productService.Update(updateProduct);
+            var result = _productService.Update(updateProduct);
+
+            return new ObjectResult(result) { StatusCode = result.StatusCode };
         }
 
         [HttpDelete("{id}")]
@@ -107,5 +121,7 @@ namespace Bootcamp.API.Controllers
         {
             return _productService.Delete(id);
         }
+
+        #endregion
     }
 }
