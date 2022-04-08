@@ -8,8 +8,6 @@ namespace Bootcamp.API.Validators
     {
         private readonly IProductRepository _repository;
 
-
-
         public ProductRequestDtoValidator(IProductRepository repository)
         {
             RuleFor(x => x.Name).NotNull().WithMessage("Name alanı boş olamaz").NotEmpty().WithMessage("Name alanı boş olamaz");

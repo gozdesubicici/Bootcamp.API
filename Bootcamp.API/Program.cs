@@ -1,12 +1,27 @@
+using Bootcamp.API.DTOs;
+using Bootcamp.API.Filters;
 using Bootcamp.API.Middlewares;
 using Bootcamp.API.Models;
+using Microsoft.AspNetCore.Diagnostics;
+using Bootcamp.API;
 using Bootcamp.API.Middlewares;
+using FluentValidation.AspNetCore;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(option => option.Filters.Add(new ValidateFilter())).AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
+builder.Services.Configure<ApiBehaviorOptions>(option =>
+{
+
+    option.SuppressModelStateInvalidFilter = true;
+});
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
