@@ -1,3 +1,4 @@
+using Bootcamp.API.Middlewares;
 using Bootcamp.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<IPAddressControlMiddleware>();
 
 app.UseHttpsRedirection();
 
