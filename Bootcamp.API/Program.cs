@@ -1,5 +1,6 @@
 using Bootcamp.API.Middlewares;
 using Bootcamp.API.Models;
+using Bootcamp.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<IPAddressControlMiddleware>();
+
+app.UseGlobalExceptionMiddleware();
 
 app.UseHttpsRedirection();
 

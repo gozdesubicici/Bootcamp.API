@@ -11,6 +11,11 @@ namespace Bootcamp.API.DTOs
         [JsonIgnore]
         public int StatusCode { get; set; } // Kodun içerisinde kullanmak için yazdım ama Response'da gözükmesine gerek yok o yüzden [JsonIgnore] koydum.
 
+        internal static ResponseDto<NoContent> Fail(string message)
+        {
+            throw new NotImplementedException();
+        }
+
         // Tek bir nesne örneği üreteceğim için Factory Method DP kullanılabilirdi. Ama bir DP projeyi daha karmaşık hale getirecekse uygulamamalıyız.
         // Burada o yüzden Static Factory Method kullanacağım.
 

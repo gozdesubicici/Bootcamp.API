@@ -1,4 +1,6 @@
-﻿namespace Bootcamp.API.Middlewares
+﻿using System.Net;
+
+namespace Bootcamp.API.Middlewares
 {
     public class IPAddressControlMiddleware
     {
@@ -37,3 +39,4 @@
             // Localhost : ::1
         }
     }
+}
